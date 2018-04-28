@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shopping Pal</title>
+    <link rel="stylesheet" href="./style.css" as="style">
+    <link rel="stylesheet" href="./icons.css" as="style">
+</head>
+
+<body>
+    <header id="i-sp-header" class="sp-pad-small">
+        <div class="sp-header-container">
+            <img src="./icons/bot.svg" alt="shopping pal">
+            <h3 id="i-sp-header-text">Shopping Pal</h3>
+        </div>
+    </header>
+
+    <section id="i-sp-chatwindow" class="sp-chatwindow sp-pad-small">
+        <div id="i-sp-chatwindow-response">
+        </div>
+
+        <div id="i-sp-loading" class="sp-loader sp-chat sp-chat-by-bot">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </section>
+    <footer id="i-sp-send" class="sp-pad-small">
+        <div id="i-sp-box-holder" class="sp-box-holder">
+            <div id="i-sp-container" class="sp-container">
+                <div id="i-sp-camera" class="sp-camera">
+                    <svg id="i-sp-camera-icon" class="" fill="#757575" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="3.2" />
+                        <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"
+                        />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                    </svg>
+                    <svg id="i-sp-record-btn-icon" class="hidden" fill="#ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"
+                        />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                    </svg>
+                </div>
+                <div id="i-sp-input" class="sp-input">
+                    <label for="i-sp-input-box" class="hidden">chat window</label>
+                    <input type="text" name="query" id="i-sp-input-box" class="sp-input-box" placeholder="Ask something">
+                </div>
+            </div>
+            <div id="i-sp-record-btn" class="sp-send-btn">
+                <svg id="i-sp-record-btn-click" fill="#00e08d" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"
+                    />
+                    <path d="M0 0h24v24H0z" fill="none" />
+                </svg>
+                <svg id="i-sp-stop-btn-click" class="hidden" fill="#e91e63" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 24H0V0h24v24z" fill="none" />
+                    <circle cx="12" cy="12" fill="#e91e63" r="8" />
+                </svg>
+            </div>
+            <div id="i-sp-send-btn" class="sp-send-btn hidden">
+                <svg fill="#00e08d" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                    <path d="M0 0h24v24H0z" fill="none" />
+                </svg>
+            </div>
+        </div>
+        <div class="hidden">
+            <input id="i-sp-file-upload" type="file" accept="image/*">
+        </div>
+    </footer>
+
+    <script src="./helper.js"></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>
