@@ -32,7 +32,6 @@
      * @description Initial Play of the app
      */
     (function initialPlay() {
-        speakToUser("aa");
         addBotResultToChat({
             type: TEXT,
             value: `Hi there, I am "Shopping Pal", your personal shopping buddy. Click a picture of any product of your interest and I can help you with your queries.
@@ -243,18 +242,13 @@
                         type: TEXT,
                         value: dict
                     });
-
-                    const testRes = ["['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'appliance, contraption, contrivance, convenience, gadget, gizmo, gismo, widget']",
-                        "['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'electronic device']",
-                        "['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'panic button']",
-                        "['iPod', 'video iPod', 'flash memory', 'external drive', 'electronic device']"]
                     
-                    if (!!dict.match(/ipod/i) && !!dict.match(/flash memory/i) && !!dict.match(/video ipod/i)) {
+                    if (!!dict.match(/ipod/i)) {
                         __CONTEXT__ = "iPhoneX";
 
                         addBotResultToChat({
                             type: TEXT,
-                            value: "I see it's an " + "IPhone X" + ".\nNow you can ask me any question regarding this product"
+                            value: "I see it's an " + "IPhoneX" + ".\nNow you can ask me any question regarding this product"
                         });
                     } else {
                         __CONTEXT__ = null;
