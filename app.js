@@ -160,10 +160,9 @@
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                clearInterval(__QUERY_INTERVAL_HOLDER__);
-                __POLL_QUESTION_ID__ = "";
-                
                 if (res.hasOwnProperty("Answer") && res.Answer !== null && res.Answer !== "none") {
+                    clearInterval(__QUERY_INTERVAL_HOLDER__);
+                    __POLL_QUESTION_ID__ = "";
 
                     addBotResultToChat({
                         type: TEXT,
@@ -176,7 +175,10 @@
                             value: res.Answer
                         })
                     }, 5e2)
-                } else {
+                } else if (res.Answer !== null) {
+                    clearInterval(__QUERY_INTERVAL_HOLDER__);
+                    __POLL_QUESTION_ID__ = "";
+                    
                     addBotResultToChat({
                         type: TEXT,
                         value: "This Question is out of my scope."
