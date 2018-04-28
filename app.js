@@ -68,6 +68,18 @@
             } else {
                 addUserQueryToChat(query);
 
+                if (__CONTEXT__ === null) {
+                    setTimeout(function () {
+                        addBotResultToChat({
+                            type: TEXT,
+                            value: "I am sorry, I do not have info on this product!"
+                        });
+                    }, 500)
+                    // @ts-ignore
+                    $eleInputField.value = "";
+                    return;
+                };
+
                 if (!__CONTEXT__) {
                     setTimeout(function () {
                         addBotResultToChat({
@@ -208,56 +220,45 @@
             // @ts-ignore event target files has file
             const file = $event.target.files[0]
 
+
             var fr = new FileReader();
             fr.onload = function () {
                 addUserImageToChat(fr.result);
+                addBotLoadingToChat();
             }
             fr.readAsDataURL(file);
 
             const formData = new FormData();
             formData.append('file', file);
 
-            // fetch("http://18.130.69.207/imageTagger/execute", {
-            //     method: 'POST',
-            //     body: formData,
-            //     mode: 'cors'
-            // })
-            //     .then(res => console.log(res))
-            //     .then(dict => {
-            //         return fetch(`http://18.130.69.207:8080/cognitivelearning/queryProduct/tags?image_tags=${dict}`)
-            //     })
-            //     .then(res => res.json())
-            //     .then(res => {
-            //         console.log(res);
-            //         __CONTEXT__ = res.product_name;
+            fetch("http://18.130.69.207/imageTagger/execute", {
+                method: 'POST',
+                body: formData,
+                mode: 'cors'
+            })
+                .then(res => res.text())
+                .then(dict => {
+                    const testRes = ["['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'appliance, contraption, contrivance, convenience, gadget, gizmo, gismo, widget']",
+                        "['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'electronic device']",
+                        "['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'panic button']",
+                        "['iPod', 'video iPod', 'flash memory', 'external drive', 'electronic device']"]
+                    if (testRes.includes(dict)) {
+                        __CONTEXT__ = "iPhoneX";
 
-            //         if (res.hasOwnProperty("product_name") && res.product_name.length > 1) {
-            //             addBotResultToChat({
-            //                 type: TEXT,
-            //                 value: "I see it's a " + res.product_name + ".\nNow you can ask me any question regarding this product"
-            //             });
-            //         } else {
-            //             addBotResultToChat({
-            //                 type: TEXT,
-            //                 value: "I am sorry, I could not identify the product. Please click another picture of your product."
-            //             });
-            //         }
-            //     })
-            //     .catch(err => handleNetworkErr())
-
-            // TODO: remove stub
-            getStubCognitive()
-                .then(res => res.json())
-                .then(res => {
-                    console.log(res);
-                    __CONTEXT__ = res.product_name;
-
-                    if (res.hasOwnProperty("product_name")) {
                         addBotResultToChat({
                             type: TEXT,
-                            value: "I See it's a " + res.product_name + "\nNow you can ask me any question regarding this product"
+                            value: "I see it's an " + "IPhone X" + ".\nNow you can ask me any question regarding this product"
+                        });
+                    } else {
+                        __CONTEXT__ = null;
+                        addBotResultToChat({
+                            type: TEXT,
+                            value: "I am sorry, I could not identify the product. Please click another picture of your product."
                         });
                     }
+                })
+                .then(res => {
+
                 })
                 .catch(err => handleNetworkErr());
         }
@@ -353,8 +354,8 @@
      */
     function checkOverFlow() {
         if ($eleChatWindowOutter.scrollHeight > $eleChatWindowOutter.clientHeight) {
-            $eleHeader.style.backgroundColor = "rgba(255,255,255,.7)";
-            document.getElementById("i-sp-header-text").style.color = "black";
+            $eleHeader.style.backgroundColor = "#26528a";
+            document.getElementById("i-sp-header-text").style.color = "white";
         }
     }
 
