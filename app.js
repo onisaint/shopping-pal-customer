@@ -174,38 +174,6 @@
             .catch(err => handleNetworkErr());
     }
 
-    $eleRecordBtn.addEventListener(
-        "click",
-        function ($event) {
-            if (!__ISRECORDING__) {
-                __ISRECORDING__ = true;
-                // @ts-ignore
-                $eleInputField.value = "Recording...";
-                $eleInputField.setAttribute("disabled", "true");
-                $eleCameraBtnIcon.classList.add("hidden");
-                const $eleRecordBtnClass = $eleRecordBtnIcon.classList;
-                $eleRecordBtnClass.remove("hidden");
-                $eleRecordBtnClass.add("sp-pulse");
-                $eleRecordStateRecord.classList.add("hidden");
-                $eleRecordStateStop.classList.remove("hidden");
-            } else {
-                __ISRECORDING__ = false;
-                // @ts-ignore
-                $eleInputField.value = "";
-                $eleInputField.removeAttribute("disabled");
-                $eleCameraBtnIcon.classList.remove("hidden");
-                const $eleRecordBtnClass = $eleRecordBtnIcon.classList;
-                $eleRecordBtnClass.add("hidden");
-                $eleRecordBtnClass.remove("sp-pulse");
-                $eleRecordStateRecord.classList.remove("hidden");
-                $eleRecordStateStop.classList.add("hidden");
-
-                // stub recording
-                addUserQueryToChat("some voice2text here");
-            }
-        }
-    )
-
     $eleCameraBtnIcon.addEventListener(
         "click",
         function ($event) {
@@ -238,11 +206,6 @@
             })
                 .then(res => res.text())
                 .then(dict => {
-                    addBotResultToChat({
-                        type: TEXT,
-                        value: dict
-                    });
-                    
                     if (!!dict.match(/ipod/i)) {
                         __CONTEXT__ = "iPhoneX";
 
@@ -371,5 +334,76 @@
             }
         }
     )
+
+    // record function
+    // @ts-ignore speech recognition works and donot care an instance
+    const recognition = new webkitSpeechRecognition();
+    // listen to continous speech until the speech is stopped
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    $eleRecordBtn.addEventListener(
+        "click",
+        function ($event) {
+            if (!__ISRECORDING__) {
+                if (!('webkitSpeechRecognition' in window)) {
+                    stopRecord("Speech recognition is not supported yet!", true);
+                }
+                else {
+                    startRecord();
+                    recognition.start();
+                }
+            } else {
+                stopRecord(true);
+                recognition.stop();
+            }
+        }
+    )
+
+    function startRecord() {
+        __ISRECORDING__ = true;
+        // @ts-ignore
+        $eleInputField.value = "Recording...";
+        $eleInputField.setAttribute("disabled", "true");
+        $eleCameraBtnIcon.classList.add("hidden");
+        const $eleRecordBtnClass = $eleRecordBtnIcon.classList;
+        $eleRecordBtnClass.remove("hidden");
+        $eleRecordBtnClass.add("sp-pulse");
+        $eleRecordStateRecord.classList.add("hidden");
+        $eleRecordStateStop.classList.remove("hidden");
+    }
+
+    function stopRecord(message, err) {
+        __ISRECORDING__ = false;
+        // @ts-ignore
+        $eleInputField.value = "";
+        $eleInputField.removeAttribute("disabled");
+        $eleCameraBtnIcon.classList.remove("hidden");
+        const $eleRecordBtnClass = $eleRecordBtnIcon.classList;
+        $eleRecordBtnClass.add("hidden");
+        $eleRecordBtnClass.remove("sp-pulse");
+        $eleRecordStateRecord.classList.remove("hidden");
+        $eleRecordStateStop.classList.add("hidden");
+
+        // stub recording
+        if (!err) {
+            addUserQueryToChat(message);
+        } else {
+            addUserQueryToChat("Voice recognition is supported yet!");
+        }
+    }
+
+    recognition.onstart = function ($event) { 
+        startRecord();
+    }
+    
+    recognition.onerror = function ($event) { 
+        stopRecord("oh oh! I think I am in the wrong track", true)
+    }
+
+    recognition.onend = function ($event) { 
+
+    }
+
 
 })();
