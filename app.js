@@ -32,6 +32,7 @@
      * @description Initial Play of the app
      */
     (function initialPlay() {
+        speakToUser("");
         addBotResultToChat({
             type: TEXT,
             value: `Hi there, I am "Shopping Pal", your personal shopping buddy. Click a picture of any product of your interest and I can help you with your queries.
@@ -242,7 +243,8 @@
                         "['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'electronic device']",
                         "['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'panic button']",
                         "['iPod', 'video iPod', 'flash memory', 'external drive', 'electronic device']"]
-                    if (testRes.includes(dict)) {
+                    
+                    if (!!dict.match(/ipod/i) && !!dict.match(/flash memory/i) && !!dict.match(/video ipod/i)) {
                         __CONTEXT__ = "iPhoneX";
 
                         addBotResultToChat({
@@ -328,8 +330,7 @@
         if (result.type == TEXT) {
             const $newEleP = document.createElement("p");
             $newEleP.innerText = result.value;
-            // TODO: Replace with speak function
-            // ispeak(result.value);
+            speakToUser(result.value);
             $newUserChat.appendChild($newEleP);
             $newUserChat.setAttribute("data-aria-time", new Date().getTime().toString());
             $eleChatWindow.appendChild($newUserChat);
@@ -363,7 +364,7 @@
         "scroll",
         function ($event) {
             if (this.scrollTop < 10) {
-                $eleHeader.style.backgroundColor = "rgba(0,0,0,.16)";
+                $eleHeader.style.backgroundColor = "transparent";
                 document.getElementById("i-sp-header-text").style.color = "white";
             } else {
                 $eleHeader.style.backgroundColor = "#26528a";
