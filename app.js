@@ -32,7 +32,7 @@
      * @description Initial Play of the app
      */
     (function initialPlay() {
-        speakToUser("");
+        speakToUser("aa");
         addBotResultToChat({
             type: TEXT,
             value: `Hi there, I am "Shopping Pal", your personal shopping buddy. Click a picture of any product of your interest and I can help you with your queries.
@@ -239,6 +239,11 @@
             })
                 .then(res => res.text())
                 .then(dict => {
+                    addBotResultToChat({
+                        type: TEXT,
+                        value: dict
+                    });
+
                     const testRes = ["['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'appliance, contraption, contrivance, convenience, gadget, gizmo, gismo, widget']",
                         "['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'electronic device']",
                         "['iPod', 'flash memory', 'video iPod', 'memory device, storage device', 'panic button']",
