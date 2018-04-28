@@ -105,7 +105,6 @@
                 fetch(`http://18.130.69.207:8080/cognitivelearning/queryProduct/query?question=${query}&product_name=${__CONTEXT__}`)
                     .then(res => res.json())
                     .then(res => {
-                        console.log(res);
                         if (res.Answer.length > 1) {
                             addBotResultToChat({
                                 type: TEXT,
@@ -161,9 +160,10 @@
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                if (res.hasOwnProperty("Answer") && res.Answer !== null) {
-                    clearInterval(__QUERY_INTERVAL_HOLDER__);
-                    __POLL_QUESTION_ID__ = "";
+                clearInterval(__QUERY_INTERVAL_HOLDER__);
+                __POLL_QUESTION_ID__ = "";
+                
+                if (res.hasOwnProperty("Answer") && res.Answer !== null && res.Answer !== "none") {
 
                     addBotResultToChat({
                         type: TEXT,
@@ -176,6 +176,11 @@
                             value: res.Answer
                         })
                     }, 5e2)
+                } else {
+                    addBotResultToChat({
+                        type: TEXT,
+                        value: "This Question is out of my scope."
+                    })
                 }
             })
             .catch(err => handleNetworkErr());
@@ -300,7 +305,7 @@
             const $newEleP = document.createElement("p");
             $newEleP.innerText = result.value;
             // TODO: Renable at the chat
-            // speakToUser(result.value);
+            speakToUser(result.value);
             $newUserChat.appendChild($newEleP);
             $newUserChat.setAttribute("data-aria-time", new Date().getTime().toString());
             $eleChatWindow.appendChild($newUserChat);
@@ -388,7 +393,7 @@
         if (err) {
             addUserQueryToChat(message);
         }
-        
+
         __ISRECORDING__ = false;
         // @ts-ignore
         $eleInputField.value = finalText;
@@ -403,7 +408,7 @@
         $eleRecordStateStop.classList.add("hidden");
 
         // on error case
-        
+
     }
 
     recognition.onstart = function ($event) {
