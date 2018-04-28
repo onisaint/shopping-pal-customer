@@ -41,18 +41,22 @@
 
 
     $eleInputField.addEventListener(
-        "keyup",
+        "focus",
         function ($event) {
             // @ts-ignore
-            if (this.value === "") {
-                $eleRecordBtn.classList.contains("hidden") ? $eleRecordBtn.classList.remove("hidden") : null;
-                !$eleSendBtn.classList.contains("hidden") ? $eleSendBtn.classList.add("hidden") : null;
-            } else {
-                !$eleRecordBtn.classList.contains("hidden") ? $eleRecordBtn.classList.add("hidden") : null;
-                $eleSendBtn.classList.contains("hidden") ? $eleSendBtn.classList.remove("hidden") : null;
-            }
+            !$eleRecordBtn.classList.contains("hidden") ? $eleRecordBtn.classList.add("hidden") : null;
+            $eleSendBtn.classList.contains("hidden") ? $eleSendBtn.classList.remove("hidden") : null;
         }
     )
+
+    $eleInputField.addEventListener(
+        "blur",
+        function ($event) {
+            $eleRecordBtn.classList.contains("hidden") ? $eleRecordBtn.classList.remove("hidden") : null;
+            !$eleSendBtn.classList.contains("hidden") ? $eleSendBtn.classList.add("hidden") : null;
+        }
+    )
+
 
     $eleSendBtn.addEventListener(
         "click",
@@ -292,7 +296,8 @@
         if (result.type == TEXT) {
             const $newEleP = document.createElement("p");
             $newEleP.innerText = result.value;
-            speakToUser(result.value);
+            // TODO: Renable at the chat
+            // speakToUser(result.value);
             $newUserChat.appendChild($newEleP);
             $newUserChat.setAttribute("data-aria-time", new Date().getTime().toString());
             $eleChatWindow.appendChild($newUserChat);
@@ -336,6 +341,8 @@
     )
 
     // record function
+    let finalText = "";
+
     // @ts-ignore speech recognition works and donot care an instance
     const recognition = new webkitSpeechRecognition();
     // listen to continous speech until the speech is stopped
@@ -362,8 +369,9 @@
 
     function startRecord() {
         __ISRECORDING__ = true;
+        finalText = "";
         // @ts-ignore
-        $eleInputField.value = "Recording...";
+        $eleInputField.value = "I am listning...";
         $eleInputField.setAttribute("disabled", "true");
         $eleCameraBtnIcon.classList.add("hidden");
         const $eleRecordBtnClass = $eleRecordBtnIcon.classList;
@@ -374,9 +382,13 @@
     }
 
     function stopRecord(message, err) {
+        if (err) {
+            addUserQueryToChat(message);
+        }
+        
         __ISRECORDING__ = false;
         // @ts-ignore
-        $eleInputField.value = "";
+        $eleInputField.value = finalText;
         $eleInputField.removeAttribute("disabled");
         $eleCameraBtnIcon.classList.remove("hidden");
         const $eleRecordBtnClass = $eleRecordBtnIcon.classList;
@@ -385,25 +397,33 @@
         $eleRecordStateRecord.classList.remove("hidden");
         $eleRecordStateStop.classList.add("hidden");
 
-        // stub recording
-        if (!err) {
-            addUserQueryToChat(message);
-        } else {
-            addUserQueryToChat("Voice recognition is supported yet!");
-        }
+        // on error case
+        
     }
 
-    recognition.onstart = function ($event) { 
+    recognition.onstart = function ($event) {
         startRecord();
     }
-    
-    recognition.onerror = function ($event) { 
+
+    recognition.onerror = function ($event) {
         stopRecord("oh oh! I think I am in the wrong track", true)
     }
 
-    recognition.onend = function ($event) { 
+    recognition.onend = function ($event) {
 
     }
 
+    recognition.onresult = function (event) {
+        let currentScript = '';
 
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+                finalText += event.results[i][0].transcript;
+                // @ts-ignore
+                $eleInputField.value = finalText;
+            } else {
+                currentScript += event.results[i][0].transcript;
+            }
+        }
+    };
 })();
