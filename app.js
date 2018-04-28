@@ -52,8 +52,11 @@
     $eleInputField.addEventListener(
         "blur",
         function ($event) {
-            $eleRecordBtn.classList.contains("hidden") ? $eleRecordBtn.classList.remove("hidden") : null;
-            !$eleSendBtn.classList.contains("hidden") ? $eleSendBtn.classList.add("hidden") : null;
+            // @ts-ignore
+            if (this.value === "") {
+                $eleRecordBtn.classList.contains("hidden") ? $eleRecordBtn.classList.remove("hidden") : null;
+                !$eleSendBtn.classList.contains("hidden") ? $eleSendBtn.classList.add("hidden") : null;
+            }
         }
     )
 
@@ -390,6 +393,7 @@
         // @ts-ignore
         $eleInputField.value = finalText;
         $eleInputField.removeAttribute("disabled");
+        $eleInputField.focus();
         $eleCameraBtnIcon.classList.remove("hidden");
         const $eleRecordBtnClass = $eleRecordBtnIcon.classList;
         $eleRecordBtnClass.add("hidden");
