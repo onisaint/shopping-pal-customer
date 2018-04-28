@@ -148,8 +148,15 @@
 
                     addBotResultToChat({
                         type: TEXT,
-                        value: res.Answer
+                        value: "Here is what our expert says,"
                     })
+
+                    setTimeout(function () {
+                        addBotResultToChat({
+                            type: TEXT,
+                            value: res.Answer
+                        })
+                    }, 5e2)
                 }
             })
             .catch(err => handleNetworkErr());
