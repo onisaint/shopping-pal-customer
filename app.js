@@ -392,6 +392,7 @@
         __ISRECORDING__ = false;
         // @ts-ignore
         $eleInputField.value = finalText;
+        finalText = "";
         $eleInputField.removeAttribute("disabled");
         $eleInputField.focus();
         $eleCameraBtnIcon.classList.remove("hidden");
@@ -411,10 +412,11 @@
 
     recognition.onerror = function ($event) {
         stopRecord("oh oh! I think I am in the wrong track", true)
+        console.log($event);
     }
 
     recognition.onend = function ($event) {
-
+        console.log($event);
     }
 
     recognition.onresult = function (event) {
