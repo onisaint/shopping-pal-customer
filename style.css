@@ -2,7 +2,7 @@
 
 :root {
     /* --shell-background: #ededed; */
-    --shell-background:url("./pattern.jpg") center center / 200px 200px repeat #2b61a3;
+    --shell-background:url("img/pattern.jpg") center center / 200px 200px repeat #2b61a3;
     --white: white;
     --radius: 25px;
     --radius-bot: 10px 10px 10px 0;
@@ -183,6 +183,15 @@ html, body {
 }
 
 /* animate -m-10-0 */
+@keyframes m-20-10 {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
+    }
+  }
+
 @-webkit-keyframes m-20-10 {
     0% {
       transform: translateY(0);

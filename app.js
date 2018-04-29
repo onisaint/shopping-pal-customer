@@ -75,6 +75,56 @@
             } else {
                 addUserQueryToChat(query);
 
+                if (
+                    !!query.match(/hello|hi|bye|hey|joke|humor|thanks|thank/i)
+                ) {
+                    let returnResponse;
+                    if (!!query.match(/hello|hi|hey/i)) {
+                        const replyArray = [
+                            "Hello!",
+                            "Hi!",
+                            "Nice to see you",
+                            "Hola!",
+                            "Greetings"
+                        ];
+
+                        returnResponse = replyArray;
+                    } else if (!!query.match(/joke|humor/i)) {
+                        const replyArray = [
+                            "Can a kangaroo jump higher than a house? Of course, a house doesn’t jump at all.",
+                            "My dog used to chase people on a bike a lot. It got so bad, finally I had to take his bike away.",
+                            "What is pointless? To tell a bald guy, a hair-raising story.",
+                            "What do you call a bull that likes taking a nap? A bulldozer!",
+                            "Why do bees hum? They don't remember the text!"
+                        ];
+
+                        returnResponse = replyArray;
+                    } else if (!!query.match(/bye/i)) {
+                        const replyArray = [
+                            "Bye!",
+                            "See you soon!"
+                        ];
+
+                        returnResponse = replyArray;
+
+                    } else if (!!query.match(/thanks|thank/i)) {
+                        const replyArray = [
+                            "you're welcome!",
+                            "My pleasure!",
+                            "No brainer at all"
+                        ];
+
+                        returnResponse = replyArray;
+                    }
+
+                    addBotResultToChat({
+                        type: TEXT,
+                        value: returnResponse[Math.round((Math.random() * (returnResponse.length - 1)))]
+                    });
+
+                    return;
+                }
+
                 if (__CONTEXT__ === null) {
                     setTimeout(function () {
                         addBotResultToChat({
@@ -178,7 +228,7 @@
                 } else if (res.Answer !== null) {
                     clearInterval(__QUERY_INTERVAL_HOLDER__);
                     __POLL_QUESTION_ID__ = "";
-                    
+
                     addBotResultToChat({
                         type: TEXT,
                         value: "This Question is out of my scope."
