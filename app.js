@@ -76,7 +76,13 @@
                 addUserQueryToChat(query);
 
                 if (
-                    !!query.match(/hello|hi|bye|hey|joke|humor|thanks|thank/i)
+                    !!query.match(/^(.*?(\bhello\b|\bhi\b|\bbye\b|\bhey\b|\bjoke\b|\bhumor\b|\bthanks\b|\bthank\b)[^$]*)$/i) 
+                    && 
+                    (
+                        !__CONTEXT__
+                        ||
+                        __CONTEXT__ === null
+                    )
                 ) {
                     let returnResponse;
                     if (!!query.match(/hello|hi|hey/i)) {
@@ -431,7 +437,7 @@
         __ISRECORDING__ = true;
         finalText = "";
         // @ts-ignore
-        $eleInputField.value = "I am listning...";
+        $eleInputField.value = "I am Listening...";
         $eleInputField.setAttribute("disabled", "true");
         $eleCameraBtnIcon.classList.add("hidden");
         const $eleRecordBtnClass = $eleRecordBtnIcon.classList;
